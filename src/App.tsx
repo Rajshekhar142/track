@@ -22,6 +22,39 @@ import { TaskList } from './components/TaskList';
 import { ManagerPanel } from './components/ManagerPanel';
 import { Stats } from './components/Stats';
 import { v4 as uuidv4 } from 'uuid';
+// small React hook + button
+
+export function InstallButton() {
+  const [deferred, setDeferred] = useState<any>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferred(e);
+      setVisible(true);
+      console.log('beforeinstallprompt saved');
+    };
+    window.addEventListener('beforeinstallprompt', handler as EventListener);
+    return () => window.removeEventListener('beforeinstallprompt', handler as EventListener);
+  }, []);
+
+  const install = async () => {
+    if (!deferred) return alert('Install prompt not ready');
+    deferred.prompt();
+    const choice = await deferred.userChoice;
+    console.log('userChoice', choice);
+    setVisible(false);
+    setDeferred(null);
+  };
+
+  if (!visible) return null;
+  return (
+    <button onClick={install} style={{ padding: '8px 12px', borderRadius: 8, background: '#0ea5e9', color: '#fff', border: 'none', fontWeight: 800 }}>
+      Install App
+    </button>
+  );
+}
 
 const todayIso = () => new Date().toISOString().slice(0,10);
 
@@ -282,6 +315,7 @@ export default function App(): JSX.Element {
             <div style={{ padding:'8px 12px', borderRadius:8, background:'#fff', border:'1px solid rgba(3,105,161,0.12)', fontWeight:800, color:'#074c6b' }}>Streak: {currentStreak()}</div>
             <button onClick={()=>setManagerOpen(s=>!s)} style={{ padding:'8px 12px', borderRadius:8, background:'#0ea5e9', color:'#fff', border:'none', fontWeight:800 }}>{managerOpen ? 'Close Manager' : 'Open Manager'}</button>
             <button onClick={exportJSON} style={{ padding:'8px 12px', borderRadius:8, background:'#fff', border:'1px solid #eee', fontWeight:800 }}>Export</button>
+            <InstallButton />
           </div>
         </header>
 
