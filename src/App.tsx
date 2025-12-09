@@ -1,6 +1,5 @@
 // src/App.tsx
 import React, { useEffect, useMemo, useState } from 'react';
-import './styles.css';
 import { useTheme } from './theme';
 import {
   loadStorage,
@@ -25,7 +24,6 @@ import { ManagerPanel } from './components/ManagerPanel';
 import { Stats } from './components/Stats';
 import { v4 as uuidv4 } from 'uuid';
 // small React hook + button
-useTheme();
 export function InstallButton() {
   const [deferred, setDeferred] = useState<any>(null);
   const [visible, setVisible] = useState(false);
@@ -66,7 +64,7 @@ export default function App(): JSX.Element {
   const [managerOpen, setManagerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [importText, setImportText] = useState('');
-
+  const {theme, setTheme} = useTheme();
   // Load DB on mount
   useEffect(() => {
     let mounted = true;
@@ -310,6 +308,12 @@ export default function App(): JSX.Element {
             <h1 style={{ margin:0, fontSize:28, fontWeight:900, color:'#074c6b' }}>Life Tracker</h1>
             <div style={{ color:'#666', marginTop:6 }}>Small daily wins — minimalist + flexible</div>
           </div>
+           <div className="col" style={{ alignItems: 'flex-end' }}>
+          <button className="btn btn-ghost" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+            {theme === 'dark' ? 'Light' : 'Dark'}
+          </button>
+          {/* optionally show install button here */}
+        </div>
 
           <div style={{ display:'flex', gap:8, alignItems:'center' }}>
             <input type='date' value={date} onChange={e=>setDate(e.target.value)} style={{ padding:8, borderRadius:8, border:'1px solid #ddd' }} />
