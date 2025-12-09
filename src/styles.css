@@ -1,12 +1,192 @@
-/* Minimal base styles */
+/* src/styles.css — paste/replace your current styles.css */
+/* Colors, spacing and typography tuned for mobile comfort */
+
 :root {
-  --bg: #f0f9ff;
-  --primary: #0ea5e9;
-  --secondary: #0369a1;
-  --strong: #074c6b;
-  --muted: #666;
+  /* Base scale */
+  --space-xxs: 6px;
+  --space-xs: 8px;
+  --space-s: 12px;
+  --space-m: 16px;
+  --space-l: 24px;
+  --space-xl: 32px;
+
+  /* Blue primary theme (soft) */
+  --color-primary: #0ea5e9;     /* vivid accent */
+  --color-primary-dark: #0369a1;/* darker for headings/labels */
+
+  /* Neutral backgrounds */
+  --bg-page: #f4fbff;           /* very soft blue -> reduces glare */
+  --bg-surface: #ffffff;        /* card surface */
+  --bg-muted: #f7fbfd;          /* alternate surface */
+
+  /* Text */
+  --text-primary: #0f1724;      /* near-black but slightly cool */
+  --text-secondary: #475569;    /* subdued */
+  --muted: #94a3b8;             /* for captions */
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  /* Elevation */
+  --shadow-1: 0 6px 18px rgba(6, 30, 48, 0.06);
+  --shadow-2: 0 10px 30px rgba(6, 30, 48, 0.08);
+
+  /* Border radius */
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  /* Typography scale (clamp for responsiveness) */
+  --font-size-base: clamp(14px, 1.8vw, 16px);
+  --line-height-base: 1.5;
+  --font-size-sm: clamp(12px, 1.5vw, 13px);
+  --font-size-lg: clamp(18px, 2.4vw, 20px);
+  --font-size-xl: clamp(22px, 3.2vw, 26px);
 }
-html,body,#root { height: 100%; margin:0; }
-body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: var(--bg); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; color:#111; padding:18px; }
-button { cursor: pointer; }
-input, button, select, textarea { font-family: inherit; }
+
+/* Dark theme variables */
+:root[data-theme='dark'] {
+  --bg-page: #071429;     /* very dark navy */
+  --bg-surface: #071a2a;  /* slightly lighter card */
+  --bg-muted: #072433;
+  --text-primary: #e6f2fb;/* soft off-white */
+  --text-secondary: #c7dbe9;
+  --muted: #7f9fb6;
+  --shadow-1: 0 6px 18px rgba(2,8,18,0.6);
+  --shadow-2: 0 10px 30px rgba(2,8,18,0.7);
+}
+
+/* Respect user preference by default */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg-page: #071429;
+    --bg-surface: #071a2a;
+    --bg-muted: #072433;
+    --text-primary: #e6f2fb;
+    --text-secondary: #c7dbe9;
+    --muted: #7f9fb6;
+  }
+}
+
+/* Base page */
+html, body, #root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  padding: var(--space-m);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Headings */
+.h1 {
+  font-size: var(--font-size-xl);
+  line-height: 1.08;
+  font-weight: 800; /* bold but legible */
+  color: var(--color-primary-dark);
+  margin: 0 0 var(--space-s) 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.h2 {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-s) 0;
+}
+
+/* Paragraph and secondary text */
+.p {
+  margin: 0 0 var(--space-s) 0;
+  color: var(--text-secondary);
+  font-weight: 500; /* slightly stronger than normal for legibility */
+}
+
+/* Card surface */
+.card {
+  background: linear-gradient(180deg, var(--bg-surface), color-mix(in srgb, var(--bg-surface) 85%, var(--bg-muted) 15%));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-m);
+  border: 1px solid rgba(3, 105, 161, 0.04);
+}
+
+/* Soft small card */
+.card-sm {
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-s);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  min-height: 44px;
+  box-shadow: var(--shadow-1);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.btn:active { transform: translateY(1px) scale(0.995); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid rgba(3,105,161,0.08);
+}
+
+/* Points badge */
+.badge {
+  background: color-mix(in srgb, var(--color-primary) 12%, white 88%);
+  color: var(--color-primary-dark);
+  font-weight: 800;
+  padding: 6px 8px;
+  border-radius: 999px;
+  font-size: var(--font-size-sm);
+}
+
+/* Task row */
+.task-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--bg-surface);
+  border: 1px solid rgba(3,105,161,0.03);
+}
+.task-row .title { font-weight: 700; color: var(--text-primary); }
+.task-row .meta { font-size: var(--font-size-sm); color: var(--muted); }
+
+/* Completed */
+.task-row.done { opacity: 0.72; filter: grayscale(6%); text-decoration: none; background: color-mix(in srgb, var(--bg-surface) 88%, black 2%); }
+
+/* Small accessibility tweaks */
+:focus { outline: 3px solid color-mix(in srgb, var(--color-primary) 20%, white 80%); outline-offset: 2px; border-radius: 8px; }
+a, button { -webkit-tap-highlight-color: rgba(0,0,0,0.06); }
+
+/* Safe area for notches */
+.app-shell { padding-bottom: calc(var(--space-l) + env(safe-area-inset-bottom)); }
+
+/* Utility */
+.row { display:flex; align-items:center; gap:12px; }
+.col { display:flex; flex-direction:column; gap:8px; }
+.small { font-size: var(--font-size-sm); color: var(--muted); }
+
+/* Tiny responsive tweaks */
+@media (min-width: 768px) {
+  body { padding: 28px; }
+  .card { padding: 20px; }
+}

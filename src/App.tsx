@@ -1,5 +1,7 @@
 // src/App.tsx
 import React, { useEffect, useMemo, useState } from 'react';
+import './styles.css';
+import { useTheme } from './theme';
 import {
   loadStorage,
   ensureSeeded,
@@ -23,7 +25,7 @@ import { ManagerPanel } from './components/ManagerPanel';
 import { Stats } from './components/Stats';
 import { v4 as uuidv4 } from 'uuid';
 // small React hook + button
-
+useTheme();
 export function InstallButton() {
   const [deferred, setDeferred] = useState<any>(null);
   const [visible, setVisible] = useState(false);
