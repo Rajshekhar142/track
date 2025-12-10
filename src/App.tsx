@@ -1,7 +1,7 @@
 // src/App.tsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
+import InstallButton from './components/InstallButton';
 import { useTheme } from './theme';
 import TaskEditor from './components/TaskEditor';
 import { TaskList } from './components/TaskList';
@@ -181,7 +181,7 @@ export default function App(): JSX.Element {
             <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} style={{ padding: '8px 12px', borderRadius: 8, background: 'transparent', border: '1px solid rgba(0,0,0,0.06)', color: 'var(--text-primary)', fontWeight: 700 }}>
               {theme === 'dark' ? 'Light' : 'Dark'}
             </button>
-
+            <InstallButton onInstalled={() => { console.log('App installed'); /* optional: record analytics */ }} />
             <input type='date' value={date} onChange={e=>setDate(e.target.value)} style={{ padding:8, borderRadius:8, border:'1px solid #ddd' }} />
             <div style={{ padding:'8px 12px', borderRadius:8, background:'var(--bg-surface)', border:'1px solid rgba(3,105,161,0.08)', fontWeight:800, color:'var(--color-primary)' }}>{pointsToday} pts</div>
             <div style={{ padding:'8px 12px', borderRadius:8, background:'var(--bg-surface)', border:'1px solid rgba(3,105,161,0.08)', fontWeight:800, color:'var(--color-primary-dark)' }}>Streak: {currentStreak()}</div>
